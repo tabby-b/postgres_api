@@ -132,6 +132,45 @@ def get_escalations():
         return jsonify({"status": "error", "message": str(e)}), 500
 
 
+@app.route('/debug-db')
+def debug_db():
+    try:
+        app.logger.info(f"DATABASE_URL: {DATABASE_URL[:50]}...")  # Only log first 50 chars for security
+
+        conn = psycopg2.connect(DATABASE_URL)
+        cursor = conn.cursor()
+
+        # Test basic connection
+        cursor.execute("SELECT version()")
+        version = cursor.fetchone()[0]
+
+        # Test if table exists
+        cursor.execute("""
+            SELECT EXISTS (
+                SELECT FROM information_schema.tables 
+                WHERE table_name = 'escalation_data'
+            )
+        """)
+        table_exists = cursor.fetchone()[0]
+
+        conn.close()
+
+        return jsonify({
+            "status": "success",
+            "database_version": version,
+            "table_exists": table_exists,
+            "connection": "OK"
+        })
+
+    except Exception as e:
+        app.logger.error(f"Database debug error: {e}")
+        return jsonify({
+            "status": "error",
+            "message": str(e),
+            "database_url_length": len(DATABASE_URL) if DATABASE_URL else 0
+        }), 500
+
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8000))
     app.run(host='0.0.0.0', port=port, debug=False)
