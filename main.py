@@ -8,7 +8,7 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 
 # Railway provides this internally - no port restrictions!
-DATABASE_URL = "postgresql://postgres:SmCfMJbkpuSWMlHwDpWMqBTDiTOhZYtO@metro.proxy.rlwy.net:31196/railway"
+DATABASE_URL = "postgresql://postgres:SmCfMJbkpuSWMlHwDpWMqBTDiTOhZYtO@postgres.railway.internal:5432/railway"
 
 
 @app.route('/')
