@@ -7,7 +7,7 @@ import logging
 app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 
-DATABASE_URL = "postgresql://postgres:SmCfMJbkpuSWMlHwDpWMqBTDiTOhZYtO@postgresapi-production.up.railway.app:443/railway?sslmode=require"
+DATABASE_URL = "postgresql://postgres:SmCfMJbkpuSWMlHwDpWMqBTDiTOhZYtO@postgresapi-production.up.railway.app:443/railway"
 
 
 @app.route('/')
